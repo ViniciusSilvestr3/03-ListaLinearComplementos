@@ -1,5 +1,11 @@
 
 #include <iostream>
+#include <regex>
+#include <wchar.h>
+#include <locale.h>
+#include <cstdlib> 
+#include <thread>   
+#include <limits>  
 using namespace std;
 
 // headers
@@ -11,6 +17,7 @@ void inserirElemento();
 void excluirElemento();
 void buscarElemento();
 int posicaoElemento(int valor);
+
 //-------------------------- 
 
 
@@ -21,6 +28,7 @@ int nElementos = 0;
 
 int main()
 {
+	setlocale(LC_ALL, "Portuguese");
 	menu();
 }
 
@@ -94,13 +102,25 @@ void exibirElementos()
 	}
 }
 
+bool validaNumero(const string& valor) {
+	regex padrao("^[-]?[0-9]+");
+	return regex_match(valor, padrao);
+};
 void inserirElemento()
 {
+	
 	int pos;
 	int valor;
+	string valorStr;
 	if (nElementos < MAX) {
 		cout << "Digite o elemento: ";
-		cin >> valor;
+		cin >> valorStr;
+		while (!validaNumero(valorStr)){
+			cout << "Valor inválido. Por favor digite um valor númerico: ";
+			cin >> valorStr;
+		}
+
+		valor = stoi(valorStr);
 		pos = posicaoElemento(valor);
 
 		if (pos != -1)
@@ -119,6 +139,7 @@ void inserirElemento()
 	}
 
 }
+
 
 void excluirElemento()
 {
